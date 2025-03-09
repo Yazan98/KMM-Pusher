@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e355fce-d505-4943-8378-2b8679e7baa0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/fastlane-plugin-kmm_pusher-1.0.0.gem" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/fastlane-plugin-kmm_pusher-1.0.0.gem" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741553154145</updated>
-      <workItem from="1741553155778" duration="4315000" />
+      <workItem from="1741553155778" duration="4655000" />
     </task>
     <servers />
   </component>
