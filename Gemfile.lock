@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fastlane-plugin-kmm_pusher (0.0.1)
+    fastlane-plugin-kmm_pusher (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -45,11 +45,10 @@ GEM
     digest-crc (0.7.0)
       rake (>= 12.0.0, < 14.0.0)
     docile (1.4.1)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20240107)
     dotenv (2.8.1)
     emoji_regex (3.2.3)
-    excon (0.109.0)
+    excon (0.112.0)
     faraday (1.10.4)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -124,8 +123,6 @@ GEM
     fastlane-sirp (1.0.0)
       sysrandom (~> 1.0)
     gh_inspector (1.1.3)
-    gli (2.22.2)
-      ostruct
     google-apis-androidpublisher_v3 (0.54.0)
       google-apis-core (>= 0.11.0, < 2.a)
     google-apis-core (0.11.3)
@@ -140,19 +137,19 @@ GEM
       google-apis-core (>= 0.11.0, < 2.a)
     google-apis-playcustomapp_v1 (0.13.0)
       google-apis-core (>= 0.11.0, < 2.a)
-    google-apis-storage_v1 (0.29.0)
+    google-apis-storage_v1 (0.31.0)
       google-apis-core (>= 0.11.0, < 2.a)
-    google-cloud-core (1.6.1)
+    google-cloud-core (1.7.1)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
     google-cloud-env (1.6.0)
       faraday (>= 0.17.3, < 3.0)
-    google-cloud-errors (1.3.1)
-    google-cloud-storage (1.45.0)
+    google-cloud-errors (1.5.0)
+    google-cloud-storage (1.47.0)
       addressable (~> 2.8)
       digest-crc (~> 0.4)
       google-apis-iamcredentials_v1 (~> 0.1)
-      google-apis-storage_v1 (~> 0.29.0)
+      google-apis-storage_v1 (~> 0.31.0)
       google-cloud-core (~> 1.6)
       googleauth (>= 0.16.2, < 2.a)
       mini_mime (~> 1.0)
@@ -162,14 +159,13 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    hashie (5.0.0)
     highline (2.0.3)
     http-cookie (1.0.8)
       domain_name (~> 0.5)
     httpclient (2.9.0)
       mutex_m
     jmespath (1.6.2)
-    json (2.7.6)
+    json (2.10.1)
     jwt (2.10.1)
       base64
     method_source (1.1.0)
@@ -183,8 +179,7 @@ GEM
     nkf (0.2.0)
     optparse (0.6.0)
     os (1.1.4)
-    ostruct (0.6.1)
-    parallel (1.24.0)
+    parallel (1.26.3)
     parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
@@ -192,7 +187,7 @@ GEM
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.1.1)
+    public_suffix (6.0.1)
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -229,18 +224,18 @@ GEM
       rubocop-ast (>= 1.28.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.30.0)
-      parser (>= 3.2.1.0)
-    rubocop-performance (1.17.1)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
+    rubocop-ast (1.38.1)
+      parser (>= 3.3.1.0)
+    rubocop-performance (1.23.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-require_tools (0.1.2)
       rubocop (>= 0.49.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     security (0.1.5)
-    signet (0.18.0)
+    signet (0.19.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
@@ -254,12 +249,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    slack-ruby-client (1.0.0)
-      faraday (>= 1.0)
-      faraday_middleware
-      gli
-      hashie
-      websocket-driver
     sysrandom (1.0.5)
     terminal-notifier (2.0.0)
     terminal-table (3.0.2)
@@ -270,12 +259,7 @@ GEM
     tty-spinner (0.9.3)
       tty-cursor (~> 0.7)
     uber (0.1.0)
-    unf (0.2.0)
     unicode-display_width (2.6.0)
-    websocket-driver (0.7.7)
-      base64
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.5)
     word_wrap (1.0.0)
     xcodeproj (1.27.0)
       CFPropertyList (>= 2.3.3, < 4.0)
@@ -290,6 +274,7 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
+  arm64-darwin-23
   ruby
 
 DEPENDENCIES
@@ -305,7 +290,6 @@ DEPENDENCIES
   rubocop-require_tools
   rubyzip
   simplecov
-  slack-ruby-client
 
 BUNDLED WITH
-   1.17.2
+   2.6.5

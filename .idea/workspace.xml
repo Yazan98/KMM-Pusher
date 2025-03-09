@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e355fce-d505-4943-8378-2b8679e7baa0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pusher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/KMM-Pusher.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KMM-Pusher.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fastlane-plugin-kmm_pusher.gemspec" beforeDir="false" afterPath="$PROJECT_DIR$/fastlane-plugin-kmm_pusher.gemspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/actions/kmm_pusher_action.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/actions/kmm_pusher_action.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/helper/kmm_pusher_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/helper/kmm_pusher_helper.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/version.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/fastlane/plugin/kmm_pusher/version.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741553154145</updated>
-      <workItem from="1741553155778" duration="3306000" />
+      <workItem from="1741553155778" duration="3610000" />
     </task>
     <servers />
   </component>
