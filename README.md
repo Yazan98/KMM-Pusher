@@ -50,3 +50,9 @@ For more information about how the `fastlane` plugin system works, check out the
 ## About _fastlane_
 
 _fastlane_ is the easiest way to automate beta deployments and releases for your iOS and Android apps. To learn more, check out [fastlane.tools](https://fastlane.tools).
+
+Commands
+```
+gem build fastlane-plugin-kmm_pusher.gemspec   
+ gem install ./fastlane-plugin-kmm_pusher-0.0.14.gem  
+```

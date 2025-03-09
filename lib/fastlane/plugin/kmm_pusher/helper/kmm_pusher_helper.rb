@@ -45,9 +45,10 @@ module Fastlane
         move_builds_to_root_path(project_name)
 
         # 4. Compress Files to Zip Files
-        compress_files(project_name, "framework")
         if is_xc_framework_enabled
           compress_files(project_name, "xcframework")
+        else
+          compress_files(project_name, "framework")
         end
 
         # 5. Check if the Git Commits Enabled after Build Push the Builds to Repository
@@ -84,20 +85,22 @@ module Fastlane
         )
       end
 
-      def get_current_working_directory
+      def self.get_current_working_directory
         Dir.pwd
       end
 
-      def upload_file_to_slack(file_path, channel, initial_comment = nil)
+      def self.upload_file_to_slack(file_path, channel, initial_comment = nil)
         client = Slack::Web::Client.new
 
         begin
-          # Upload the file
-          response = client.files_upload(
-            channels: channel,
+          # Upload the file using the new files.upload_v2 method
+          response = client.files_upload_v2(
+            channels: [channel],
             file: Faraday::UploadIO.new(file_path, 'application/octet-stream'),
             filename: File.basename(file_path),
-            initial_comment: initial_comment
+            title: File.basename(file_path), # Add a title for the file
+            initial_comment: initial_comment,
+            content: File.read(file_path)
           )
 
           puts "File uploaded successfully: #{response['file']['permalink']}"
@@ -128,14 +131,14 @@ module Fastlane
       end
 
       def self.push_build(commit_message)
-        sh("git add .")
-        sh("git commit -m \"#{commit_message}\" ")
+        Actions.sh("git add .")
+        Actions.sh("git commit -m \"#{commit_message}\" ")
 
-        current_branch = `git rev-parse --abbrev-ref HEAD`.strip
-        sh("git push origin #{get_git_reference}")
+        current_branch = get_git_reference
+        Actions.sh("git push origin #{current_branch}")
       end
 
-      def get_git_reference
+      def self.get_git_reference
         # Try to get the first tag name
         first_tag = `git describe --tags --abbrev=0 2>&1`.strip
 
@@ -151,53 +154,53 @@ module Fastlane
       def self.move_builds_to_root_path(project_name)
         print_log_message("Start Moving Builds from Build Folder to Root Folder")
 
-        def directory = sh("pwd").delete(" \t\r\n")
-        def iosSourceDirectory = directory + "/#{project_name}/build/XCFrameworks/release/#{project_name}.xcframework"
-        def androidBuildDirectory = directory + "/#{project_name}/build/outputs/aar/#{project_name}-debug.aar"
+        directory = Actions.sh("pwd").delete(" \t\r\n")
+        iosSourceDirectory = directory + "/#{project_name}/build/XCFrameworks/release/#{project_name}.xcframework"
+        androidBuildDirectory = directory + "/#{project_name}/build/outputs/aar/#{project_name}-debug.aar"
 
         print_log_message("Current Working Directory : #{directory}")
         print_log_message("IOS Working Directory : #{iosSourceDirectory}")
         print_log_message("Android Working Directory : #{androidBuildDirectory}")
 
-        sh("mv " + iosSourceDirectory + " " + directory + "/#{project_name}.xcframework")
-        sh("mv " + androidBuildDirectory + " " + directory + "/#{project_name}-debug.aar")
+        Actions.sh("mv " + iosSourceDirectory + " " + directory + "/#{project_name}.xcframework")
+        Actions.sh("mv " + androidBuildDirectory + " " + directory + "/#{project_name}-debug.aar")
       end
 
       def self.build_library_module(project_name, is_xc_framework_enabled)
-        sh("./gradlew #{project_name}:clean")
-        sh("./gradlew #{project_name}:assemble")
+        Actions.sh("./gradlew #{project_name}:clean")
+        Actions.sh("./gradlew #{project_name}:assemble")
         if is_xc_framework_enabled
-          sh("./gradlew #{project_name}:assembleXCFramework")
+          Actions.sh("./gradlew #{project_name}:assembleXCFramework")
         end
       end
 
       def self.delete_prev_builds(project_name)
         begin
-          sh("rm ./#{project_name}-debug.aar")
+          Actions.sh("rm ./#{project_name}-debug.aar")
         rescue Exception
           # Ignored if Not Exists
         end
 
         begin
-          sh("rm -rf ./#{project_name}.framework")
+          Actions.sh("rm -rf ./#{project_name}.framework")
         rescue Exception
           # Ignored if Not Exists
         end
 
         begin
-          sh("rm -rf ./#{project_name}.xcframework")
+          Actions.sh("rm -rf ./#{project_name}.xcframework")
         rescue Exception
           # Ignored if Not Exists
         end
 
         begin
-          sh("rm -rf ./#{project_name}.framework.zip")
+          Actions.sh("rm -rf ./#{project_name}.framework.zip")
         rescue Exception
           # Ignored if Not Exists
         end
 
         begin
-          sh("rm -rf ./#{project_name}.xcframework.zip")
+          Actions.sh("rm -rf ./#{project_name}.xcframework.zip")
         rescue Exception
           # Ignored if Not Exists
         end
