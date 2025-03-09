@@ -1,3 +1,7 @@
 lane :test do
-  kmm_pusher
+  kmm_pusher(
+    project_name: "Test",
+    service_type: "slack",
+    is_xc_framework_enabled: true
+  )
 end

@@ -9,16 +9,11 @@ Gem::Specification.new do |spec|
   spec.email         = 'yazantarifi989@gmail.com'
 
   spec.summary       = 'Kotlin Multiplatform Mobile Plugin to Collect Android and IOS Builds to Push them on (Slack, Discord, Telegram)'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-kmm_pusher"
+  spec.homepage      = "https://github.com/Yazan98/KMM-Pusher"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
   spec.require_paths = ['lib']
   spec.metadata['rubygems_mfa_required'] = 'true'
-  spec.required_ruby_version = '>= 2.6'
-
-  # Don't add a dependency to fastlane or fastlane_re
-  # since this would cause a circular dependency
-
-  # spec.add_dependency 'your-dependency', '~> 1.0.0'
+  spec.required_ruby_version = '>= 3.3.5'
 end

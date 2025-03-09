@@ -20,6 +20,10 @@ gem 'rubocop-performance'
 gem 'rubocop-require_tools'
 # SimpleCov is a code coverage analysis tool for Ruby.
 gem 'simplecov'
+# Generate Zip Files
+gem 'rubyzip'
+# Slack Api
+gem 'slack-ruby-client'
 
 gemspec
 

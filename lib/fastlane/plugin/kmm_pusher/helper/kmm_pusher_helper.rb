@@ -1,16 +1,169 @@
 require 'fastlane_core/ui/ui'
+require 'zip'
+require 'slack-ruby-client'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
 
   module Helper
     class KmmPusherHelper
-      # class methods that you define here become available in your action
-      # as `Helper::KmmPusherHelper.your_method`
-      #
+      def self.start_plugin(
+        project_name,
+        service_type,
+        is_xc_framework_enabled,
+        is_commit_enabled,
+        commit_message,
+        slack_channel,
+        slack_app_token
+      )
+
+        # Pre Check Plugin Params before Start the Plugin
+        raise PluginMissingParamsException, print_error_message("project_name is required in configuration!") if project_name.nil? || project_name.empty?
+        raise PluginMissingParamsException, print_error_message("service_type is required in configuration!") if service_type.nil? || service_type.empty?
+
+        # Print Plugin Params Start
+        print_log_message("KMM Pusher Started with Project #{project_name} and Service Type #{service_type}")
+
+        # 1. Remove Prev Build for Android and IOS
+        delete_prev_builds(project_name)
+
+        # 2. Start Building the Library By Project Module
+        build_library_module(project_name, is_xc_framework_enabled)
+
+        # 3. Find Build Paths
+        move_builds_to_root_path(project_name)
+
+        # 4. Compress Files to Zip Files
+        compress_files(project_name, "framework")
+        if is_xc_framework_enabled
+          compress_files(project_name, "xcframework")
+        end
+
+        # 5. Check if the Git Commits Enabled after Build Push the Builds to Repository
+        if is_commit_enabled
+          push_build(commit_message)
+        end
+
+        # 6. Push the Builds to Service
+        if service_type == "slack"
+          push_slack_build()
+        end
+
+      end
+
+      def self.compress_files(project_name, extention)
+        # Define the file to compress
+        file_to_compress = "#{project_name}.#{extention}"
+        zip_file = "#{file_to_compress}.zip"
+
+        # Create the ZIP file
+        Zip::File.open(zip_file, Zip::File::CREATE) do |zip|
+          if File.directory?(file_to_compress)
+            # Add all files in the directory recursively
+            Dir["#{file_to_compress}/**/**"].each do |file|
+              zip.add(file.sub("#{file_to_compress}/", ""), file)
+            end
+          else
+            # Add a single file
+            zip.add(File.basename(file_to_compress), file_to_compress)
+          end
+        end
+
+        print_log_message("Successfully created #{zip_file}")
+      end
+
+      def self.push_build(commit_message)
+        sh("git add .")
+        sh("git commit -m \"#{commit_message}\" ")
+
+        current_branch = `git rev-parse --abbrev-ref HEAD`.strip
+        sh("git push origin #{get_git_reference}")
+      end
+
+      def get_git_reference
+        # Try to get the first tag name
+        first_tag = `git describe --tags --abbrev=0 2>&1`.strip
+
+        if $?.success?
+          first_tag
+        else
+          # Fall back to the current branch name
+          current_branch = `git rev-parse --abbrev-ref HEAD 2>&1`.strip
+          current_branch
+        end
+      end
+
+      def self.move_builds_to_root_path(project_name)
+        print_log_message("Start Moving Builds from Build Folder to Root Folder")
+
+        def directory = sh("pwd").delete(" \t\r\n")
+        def iosSourceDirectory = directory + "/#{project_name}/build/XCFrameworks/release/#{project_name}.xcframework"
+        def androidBuildDirectory = directory + "/#{project_name}/build/outputs/aar/#{project_name}-debug.aar"
+
+        print_log_message("Current Working Directory : #{directory}")
+        print_log_message("IOS Working Directory : #{iosSourceDirectory}")
+        print_log_message("Android Working Directory : #{androidBuildDirectory}")
+
+        sh("mv " + iosSourceDirectory + " " + directory + "/#{project_name}.xcframework")
+        sh("mv " + androidBuildDirectory + " " + directory + "/#{project_name}-debug.aar")
+      end
+
+      def self.build_library_module(project_name, is_xc_framework_enabled)
+        sh("./gradlew #{project_name}:clean")
+        sh("./gradlew #{project_name}:assemble")
+        if is_xc_framework_enabled
+          sh("./gradlew #{project_name}:assembleXCFramework")
+        end
+      end
+
+      def self.delete_prev_builds(project_name)
+        begin
+          sh("rm ./#{project_name}-debug.aar")
+        rescue Exception
+          # Ignored if Not Exists
+        end
+
+        begin
+          sh("rm -rf ./#{project_name}.framework")
+        rescue Exception
+          # Ignored if Not Exists
+        end
+
+        begin
+          sh("rm -rf ./#{project_name}.xcframework")
+        rescue Exception
+          # Ignored if Not Exists
+        end
+
+        begin
+          sh("rm -rf ./#{project_name}.framework.zip")
+        rescue Exception
+          # Ignored if Not Exists
+        end
+
+        begin
+          sh("rm -rf ./#{project_name}.xcframework.zip")
+        rescue Exception
+          # Ignored if Not Exists
+        end
+      end
+
+      def self.print_log_message(message)
+        puts " ---------------------------------------- "
+        puts " -------------- #{message} -------------- "
+        puts " ---------------------------------------- "
+      end
+
+      def self.print_error_message(message)
+        "\e[31m ------ [#{message}] ------ \e[0m"
+      end
+
       def self.show_message
-        UI.message("Hello from the kmm_pusher plugin helper!")
+        UI.message("Kotlin Pusher Plugin Started Message")
       end
     end
   end
+end
+
+class PluginMissingParamsException < StandardError
 end
