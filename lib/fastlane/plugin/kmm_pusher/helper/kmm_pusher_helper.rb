@@ -1,6 +1,5 @@
 require 'fastlane_core/ui/ui'
 require 'zip'
-require 'slack-ruby-client'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
@@ -25,11 +24,6 @@ module Fastlane
         if service_type == "slack"
           raise PluginMissingParamsException, print_error_message("slack_channel is required in configuration!") if slack_channel.nil? || slack_channel.empty?
           raise PluginMissingParamsException, print_error_message("slack_app_token is required in configuration!") if slack_app_token.nil? || slack_app_token.empty?
-        end
-
-        # Pre Configure Slack Instance
-        Slack.configure do |config|
-          config.token = slack_app_token
         end
 
         # Print Plugin Params Start
@@ -58,30 +52,33 @@ module Fastlane
 
         # 6. Push the Builds to Service
         if service_type == "slack"
-          push_slack_build(slack_channel, project_name, is_xc_framework_enabled)
+          push_slack_build(slack_channel, project_name, is_xc_framework_enabled, slack_app_token)
         end
 
       end
 
-      def self.push_slack_build(slack_channel, project_name, is_xc_framework_enabled)
+      def self.push_slack_build(slack_channel, project_name, is_xc_framework_enabled, token)
         if is_xc_framework_enabled
           upload_file_to_slack(
             "#{get_current_working_directory}/#{project_name}.xcframework.zip",
             slack_channel,
-            "A new Build Pushed for IOS Client with XCFramework"
+            "A new Build Pushed for IOS Client with XCFramework",
+            token
           )
         else
           upload_file_to_slack(
             "#{get_current_working_directory}/#{project_name}.framework.zip",
             slack_channel,
-            "A new Build Pushed for IOS Client with Framework"
+            "A new Build Pushed for IOS Client with Framework",
+            token
           )
         end
 
         upload_file_to_slack(
           "#{get_current_working_directory}/#{project_name}-debug.aar",
           slack_channel,
-          "A new Build Pushed for Android Client with Framework"
+          "A new Build Pushed for Android Client with Framework",
+          token
         )
       end
 
@@ -89,24 +86,8 @@ module Fastlane
         Dir.pwd
       end
 
-      def self.upload_file_to_slack(file_path, channel, initial_comment = nil)
-        client = Slack::Web::Client.new
-
-        begin
-          # Upload the file using the new files.upload_v2 method
-          response = client.files_upload_v2(
-            channels: [channel],
-            file: Faraday::UploadIO.new(file_path, 'application/octet-stream'),
-            filename: File.basename(file_path),
-            title: File.basename(file_path), # Add a title for the file
-            initial_comment: initial_comment,
-            content: File.read(file_path)
-          )
-
-          puts "File uploaded successfully: #{response['file']['permalink']}"
-        rescue Slack::Web::Api::Errors::SlackError => e
-          puts "Failed to upload file: #{e.message}"
-        end
+      def self.upload_file_to_slack(file_path, channel, initial_comment = nil, slack_token)
+        Actions.sh("node pusher.js #{file_path} \"#{channel}\" \"#{initial_comment}\" #{slack_token}")
       end
 
       def self.compress_files(project_name, extention)

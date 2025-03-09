@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'Yazan Tarifi'
   spec.email         = 'yazantarifi989@gmail.com'
 
-  spec.summary       = 'Kotlin Multiplatform Mobile Plugin to Collect Android and IOS Builds to Push them on (Slack, Discord, Telegram)'
+  spec.summary       = 'Kotlin Multiplatform Mobile Plugin to Collect Android and IOS Builds to Push them on Slack'
   spec.homepage      = "https://github.com/Yazan98/KMM-Pusher"
   spec.license       = "MIT"
 

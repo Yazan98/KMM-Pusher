@@ -22,8 +22,6 @@ gem 'rubocop-require_tools'
 gem 'simplecov'
 # Generate Zip Files
 gem 'rubyzip'
-# Slack Api
-gem 'slack-ruby-client'
 
 gemspec
 

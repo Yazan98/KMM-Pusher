@@ -27,7 +27,7 @@ module Fastlane
       end
 
       def self.description
-        "Kotlin Multiplatform Mobile Plugin to Collect Android and IOS Builds to Push them on (Slack, Discord, Telegram)"
+        "Kotlin Multiplatform Mobile Plugin to Collect Android and IOS Builds to Push them on Slack"
       end
 
       def self.authors
@@ -39,7 +39,7 @@ module Fastlane
       end
 
       def self.details
-        "Build Kotlin Multiplatform Mobile Library Projects and Generate Builds to Push them on Slack, Discord, Telegram Channels to be able to Track All KMM Library Builds"
+        "Build Kotlin Multiplatform Mobile Library Projects and Generate Builds to Push them on Slack Channels to be able to Track All KMM Library Builds"
       end
 
       def self.available_options
