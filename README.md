@@ -13,5 +13,5 @@ A Fastlane plugin to streamline the build, distribution, and notification proces
 Commands
 ```
 gem build fastlane-plugin-kmm_pusher.gemspec   
- gem install ./fastlane-plugin-kmm_pusher-0.0.14.gem  
+gem install ./fastlane-plugin-kmm_pusher-0.0.14.gem  
 ```
