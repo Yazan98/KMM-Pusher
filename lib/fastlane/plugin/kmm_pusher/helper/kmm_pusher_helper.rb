@@ -1,5 +1,8 @@
 require 'fastlane_core/ui/ui'
 require 'zip'
+require 'net/http'
+require 'uri'
+require 'json'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
@@ -24,6 +27,14 @@ module Fastlane
         if service_type == "slack"
           raise PluginMissingParamsException, print_error_message("slack_channel is required in configuration!") if slack_channel.nil? || slack_channel.empty?
           raise PluginMissingParamsException, print_error_message("slack_app_token is required in configuration!") if slack_app_token.nil? || slack_app_token.empty?
+        end
+
+        if service_type == "slack"
+          send_slack_message(
+            "Pusher Triggered new Build with Number (#{get_git_reference})",
+            slack_app_token,
+            slack_channel
+          )
         end
 
         # Print Plugin Params Start
@@ -55,6 +66,36 @@ module Fastlane
           push_slack_build(slack_channel, project_name, is_xc_framework_enabled, slack_app_token)
         end
 
+      end
+
+      def self.send_slack_message(message, token, channel_id)
+        # Slack API endpoint for posting messages
+        uri = URI.parse("https://slack.com/api/chat.postMessage")
+
+        # Create the HTTP request
+        request = Net::HTTP::Post.new(uri)
+        request.content_type = "application/json; charset=utf-8"
+        request["Authorization"] = "Bearer #{token}"
+
+        # Prepare the request body
+        body = {
+          channel: channel_id,
+          text: message
+        }
+        request.body = body.to_json
+
+        # Send the request
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        # Parse the response
+        if response.is_a?(Net::HTTPSuccess)
+          puts "Message sent successfully!"
+          puts JSON.parse(response.body)
+        else
+          puts "Failed to send message: #{response.body}"
+        end
       end
 
       def self.push_slack_build(slack_channel, project_name, is_xc_framework_enabled, token)
