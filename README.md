@@ -4,6 +4,9 @@
 
 A Fastlane plugin designed to streamline the build, distribution, and notification process for Kotlin Multiplatform Mobile (KMM) projects. This plugin integrates seamlessly with Fastlane to automate your KMM workflows, ensuring your team stays informed via Slack notifications.
 
+<img width="661" alt="Screenshot 2025-03-10 at 10 16 04 PM" src="https://github.com/user-attachments/assets/2523eeda-185a-4a16-be76-ad86515c454e" />
+
+
 ## Description
 
 This plugin is built to automate the build and distribution process for Kotlin Multiplatform Mobile (KMM) libraries, particularly when your app relies on an external KMM library. It simplifies the process of building, uploading artifacts, and notifying your team via Slack, making your development workflow more efficient.
